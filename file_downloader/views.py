@@ -100,6 +100,31 @@ class ExtractAllPDFView(APIView):
 
 
 
+class PreviewHTMLAPIView(APIView):
+    def get(self, request, filename, format=None):
+        uploads_folder = 'uploads'  # Path to the uploads folder
+
+        html_filepath = os.path.join(uploads_folder, filename)
+        css_filepath = os.path.join(uploads_folder, 'style.css')
+
+        if os.path.isfile(html_filepath) and os.path.isfile(css_filepath):
+            with open(html_filepath, 'r') as html_file, open(css_filepath, 'r') as css_file:
+                html_content = html_file.read()
+                css_content = css_file.read()
+
+            combined_html = f'<style>{css_content}</style>\n{html_content}'
+
+            return Response({'combined_html': combined_html})
+
+        return HttpResponseNotFound('File not found')
+
+
+
+
+
+
+
+
 import os
 from django.http import HttpResponseNotFound, HttpResponse
 
