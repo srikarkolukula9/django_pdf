@@ -14,6 +14,10 @@ from PyPDF2 import PdfReader
 
 from django.http import FileResponse
 
+from django.views.generic import TemplateView
+
+from django.http import HttpResponseNotFound
+from django.http import HttpResponse
 
 def upload_file(request):
     if request.method == 'POST':
@@ -93,4 +97,60 @@ class ExtractAllPDFView(APIView):
 
         return JsonResponse({'pdf_files': pdf_files})
 #This API extracts information about all the PDF files present in the folder
+
+
+
+import os
+from django.http import HttpResponseNotFound, HttpResponse
+
+def preview_html(request, filename):
+    uploads_folder = 'uploads'  # Path to the uploads folder
+
+    html_filepath = os.path.join(uploads_folder, filename)
+    css_filepath = os.path.join(uploads_folder, 'style.css')
+
+    if os.path.isfile(html_filepath) and os.path.isfile(css_filepath):
+        with open(html_filepath, 'r') as html_file, open(css_filepath, 'r') as css_file:
+            html_content = html_file.read()
+            css_content = css_file.read()
+
+        combined_html = f'<style>{css_content}</style>\n{html_content}'
+
+        return HttpResponse(combined_html, content_type='text/html')
+
+    return HttpResponseNotFound('File not found')
+
+
+
+
+
+
+# class RenderHTMLView(TemplateView):
+#     def get_template_names(self):
+#         filename = self.kwargs['filename']
+#         html_file_path = os.path.join(settings.MEDIA_ROOT, 'uploads/html', filename)
+#         css_file_path = os.path.join(settings.MEDIA_ROOT, 'uploads/css', filename)
+
+#         # Generate a unique template name for each request
+#         unique_template_name = f'rendered_{filename}.html'
+
+#         # Create a new HTML file by combining the uploaded HTML and CSS
+#         with open(html_file_path, 'r') as html_file:
+#             html_content = html_file.read()
+
+#         with open(css_file_path, 'r') as css_file:
+#             css_content = css_file.read()
+
+#         rendered_html = f'<style>{css_content}</style>\n{html_content}'
+
+#         # Save the combined HTML and CSS content to a new template file
+#         template_dir = os.path.join(settings.BASE_DIR, 'rendered_templates')
+#         os.makedirs(template_dir, exist_ok=True)  # Create the 'rendered_templates' directory if it doesn't exist
+
+#         template_path = os.path.join(template_dir, unique_template_name)
+#         with open(template_path, 'w') as template_file:
+#             template_file.write(rendered_html)
+
+#         return [os.path.join('rendered_templates', unique_template_name)]
+
 
