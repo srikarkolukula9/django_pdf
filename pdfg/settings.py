@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-jtv!5@rr^=-1v3=1iyrsqsq_a-&=7xv8o0c+^h!8usk$#_0^3#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'pdfg.middleware.open_access_middleware' ,
+    # 'pdfg.middleware.CSPMiddleware'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -137,3 +138,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Find templates in the same folder as settings.py.
+CSP_DEFAULT_SRC = [
+    "'self'",
+    "'unsafe-inline'",
+    "'unsafe-eval'",
+    "'http://localhost:3000/Preview'" ,
+    "'http://127.0.0.1:8000/api/preview/index.html/'",
+    "data:",
+]
+
+
+
+X_FRAME_OPTIONS = 'ALLOW-FROM http://localhost:3000/Preview' 
+
