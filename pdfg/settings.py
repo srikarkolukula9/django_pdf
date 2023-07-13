@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'pdfg.middleware.open_access_middleware' ,
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
