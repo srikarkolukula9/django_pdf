@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from PyPDF2 import PdfReader
 
 from django.http import FileResponse
+from django.core.files.storage import default_storage
 
 from django.views.generic import TemplateView
 
@@ -40,7 +41,10 @@ class FileUploadView(APIView):
         if serializer.is_valid():
             serializer.save()
             html_file = serializer.validated_data['html_file']
+            html_path = default_storage.save('index.html', html_file)
+
             css_file = serializer.validated_data['css_file']
+            css_path = default_storage.save('static.css' , css_file)
             # Perform additional processing with the uploaded files
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

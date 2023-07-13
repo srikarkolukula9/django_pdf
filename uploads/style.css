@@ -1,25 +1,92 @@
-.nfo-certificate, .nfo-certificate * { box-sizing: border-box; }.nfo-certificate {background: #f1fafe; border-style: solid; border-color: #2c6ab1; border-width: 20px; padding: 54px 149px 54px 149px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; width: 840px; height: 600px; position: relative; overflow: hidden;}
- .frame-11861 {display: flex; flex-direction: column; gap: 59px; align-items: center; justify-content: center; flex-shrink: 0; position: relative;}
- .frame-11858 {display: flex; flex-direction: column; gap: 30px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative; overflow: hidden;}
- .frame-11863 {display: flex; flex-direction: column; gap: 30px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;}
- .vector {flex-shrink: 0; position: relative; overflow: visible;}
- .frame-11857 {flex-shrink: 0; width: 411px; height: 68px; position: relative; overflow: hidden;}
- .certificate-of-outstanding-performance {color: #2c6ab1; text-align: center; font: 700 34.24px/92% 'Cardo', sans-serif; position: absolute; left: calc(50% - 205.5px);top: 0px; width: 411px; height: 61.1px;}
- .vector-2733 {position: absolute; left: calc(50% - 119.5px);top: 65.04px; overflow: visible;}
- .frame-11859 {display: flex; flex-direction: column; gap: 3px; align-items: center; justify-content: center; flex-shrink: 0; position: relative; overflow: hidden;}
- .frame-118582 {display: flex; flex-direction: column; gap: 6px; align-items: center; justify-content: center; flex-shrink: 0; position: relative;}
- .this-is-to-certify-that {color: #051822; text-align: center; font: 700 18px/158.5% 'Cardo', sans-serif; opacity: 0.800000011920929; position: relative; width: 221px; height: 17px;}
- .name {color: #183041; text-align: center; font: 700 50px/158.5% 'Cardo', sans-serif; position: relative;}
- .frame-11866 {display: flex; flex-direction: row; gap: 2px; align-items: center; justify-content: center; flex-shrink: 0; position: relative; overflow: hidden;}
- .class {color: #000000; text-align: center; font: 400 italic 20px/139% 'Cardo', sans-serif; position: relative;}
- .of {color: #000000; text-align: center; font: 400 italic 20px/139% 'Cardo', sans-serif; position: relative;}
- .school {color: #000000; text-align: center; font: 400 italic 20px/139% 'Cardo', sans-serif; position: relative;}
- .frame-118662 {padding: 0px 15px 0px 0px; display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: center; flex-shrink: 0; width: 716px; position: relative; overflow: hidden;}
- .achieved {color: #000000; text-align: center; font: 400 20px/139% 'Cardo', sans-serif; position: relative;}
- .rank {color: #000000; text-align: center; font: 400 20px/139% 'Cardo', sans-serif; position: relative;}
- .in-the-national-finance-olympiad-held-on {color: #000000; text-align: center; font: 400 20px/139% 'Cardo', sans-serif; position: relative;}
- .date {color: #000000; text-align: center; font: 400 20px/139% 'Cardo', sans-serif; position: relative;}
- .frame-11862 {padding: 1px 0px 1px 0px; display: flex; flex-direction: column; gap: 2px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative; overflow: hidden;}
- .vector-27332 {opacity: 0.30000001192092896; flex-shrink: 0; position: relative; overflow: visible;}
- .reeju-datta {color: #000000; text-align: center; font: 700 18px/136.5% 'Cardo', sans-serif; position: relative;}
- .cofounder-cashfree {color: #000000; text-align: center; font: 400 18px/136.5% 'Cardo', sans-serif; position: relative;}
+html, body {
+    height: 100vh;
+    width: 100vw;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    font-family: 'Comfortaa', cursive;
+    margin: 0;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: min(100vw, 80rem);
+    /* Hint */
+    align-items: center;
+}
+.container > * {
+    margin: 0.5rem;
+}
+.heading {
+    font-size: 5rem;
+    margin: 1.5rem;
+    font-weight: 500;
+}
+@media screen and (max-width:540px) {
+    .heading {
+        font-size: 2.5rem;
+    }
+}
+.description {
+    font-style: oblique;
+}
+.search_wrapper {
+    border: 0.125rem solid rgb(23, 23, 23);
+    height: 3rem;
+    padding: 0.25rem 0.75rem;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+.search_label{
+    transition: linear 0.25s;
+    transform: none;
+    position: absolute;
+    font-size: 1.25rem;
+    transform-origin: left;
+    background-color: white;
+    padding: 0 0.5rem;
+    z-index: -1;
+    margin-left: 1.5rem;
+}
+.search_wrapper:focus-within {
+    border-color: #303F9F;
+}
+.search_wrapper:focus-within > .search_label,
+.search_input:valid + .search_label {
+    transform: translateY(-1.5rem) scale(0.75);
+    transition: linear 0.25s;
+    z-index: 1;
+    color: #303F9F;
+}
+.search_input,
+.search_input:focus-visible {
+    background-color: transparent;
+    flex-grow: 1;
+    border: none;
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+    outline: none;
+    max-width: calc(100% - 2rem);
+}
+.search_button {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    color: white;
+    background-color: #3F51B5;
+    border-radius: 0.25rem;
+    border: none;
+    padding: 0.5rem 0.75rem;
+}
+.search_icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
