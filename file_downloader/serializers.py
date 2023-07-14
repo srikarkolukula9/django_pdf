@@ -17,4 +17,4 @@ class FileUploadSerializer(serializers.Serializer):
 
 
 class FileUploadSerializer(serializers.Serializer):
-    css_file = serializers.FileField()
+    csv_file = serializers.FileField()

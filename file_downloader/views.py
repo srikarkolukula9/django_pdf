@@ -20,6 +20,8 @@ from django.views.generic import TemplateView
 from django.http import HttpResponseNotFound
 from django.http import HttpResponse
 
+import csv
+
 def upload_file(request):
     if request.method == 'POST':
         form = MyForm(request.POST, request.FILES)
@@ -171,11 +173,12 @@ def delete_uploads(request):
 
 
 
-class FileUploadView(APIView):
+
+class CSVFileUploadView(APIView):
     def post(self, request, format=None):
         serializer = FileUploadSerializer(data=request.data)
         if serializer.is_valid():
-            css_file = serializer.validated_data['css_file']
+            csv_file = serializer.validated_data['csv_file']
             
             # Get the upload folder path
             upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
@@ -184,16 +187,43 @@ class FileUploadView(APIView):
             if not os.path.exists(upload_folder):
                 os.makedirs(upload_folder)
 
-            # Save the uploaded CSS file to the uploads folder
-            css_path = os.path.join(upload_folder, css_file.name)
-            with open(css_path, 'wb') as file:
-                file.write(css_file.read())
+            # Save the uploaded CSV file to the uploads folder
+            csv_path = os.path.join(upload_folder, csv_file.name)
+            with open(csv_path, 'wb') as file:
+                file.write(csv_file.read())
 
             # Perform additional processing with the uploaded file if needed
 
             return Response(status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+class CSVHeaderAPIView(APIView):
+    def post(self, request, format=None):
+        csv_file_name = request.data.get('csv_file')
+        upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
+        csv_file_path = os.path.join(upload_folder, csv_file_name)
+
+        if not os.path.exists(csv_file_path):
+            return Response({'error': 'CSV file not found.'}, status=400)
+
+        headers = []
+
+        try:
+            with open(csv_file_path, 'r') as file:
+                reader = csv.reader(file)
+                headers = next(reader)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
+
+        return Response({'headers': headers})
+
 
 
 
