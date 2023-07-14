@@ -153,6 +153,27 @@ def preview_html(request, filename):
 
 
 
+def delete_uploads(request):
+    upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
+
+    try:
+        # Iterate through files within the uploads folder and delete them
+        for filename in os.listdir(upload_folder):
+            file_path = os.path.join(upload_folder, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+        return JsonResponse({'message': 'All files deleted successfully.'})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+
+
+
+
+
 
 # class RenderHTMLView(TemplateView):
 #     def get_template_names(self):

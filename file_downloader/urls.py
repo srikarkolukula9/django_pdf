@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import upload_file, FileUploadView, ExtractPDFView, PreviewPDFView, ExtractAllPDFView, PreviewHTMLAPIView, preview_html
+from .views import upload_file, FileUploadView, ExtractPDFView, PreviewPDFView, ExtractAllPDFView, PreviewHTMLAPIView, preview_html, delete_uploads
 
 app_name = 'file_downloader'
 
@@ -12,4 +12,5 @@ urlpatterns = [
     # path('api/preview/<str:filename>/', PreviewHTMLAPIView.as_view(), name='preview_html_api'),
     path('api/preview/<str:filename>/', preview_html, name='preview_html'),
     # path('api/render-html/<str:filename>/', RenderHTMLView.as_view(), name='render_html'),
+    path('api/delete-uploads/', delete_uploads, name='delete_uploads'),
 ]
