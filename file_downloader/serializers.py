@@ -16,5 +16,5 @@ class FileUploadSerializer(serializers.Serializer):
 
 
 
-class FileUploadSerializer(serializers.Serializer):
+class FileUploadCSVSerializer(serializers.Serializer):
     csv_file = serializers.FileField()

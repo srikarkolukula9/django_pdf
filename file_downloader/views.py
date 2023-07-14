@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import MyForm
 from .models import MyModel
-from .serializers import FileUploadSerializer
+from .serializers import FileUploadSerializer, FileUploadCSVSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -176,7 +176,7 @@ def delete_uploads(request):
 
 class CSVFileUploadView(APIView):
     def post(self, request, format=None):
-        serializer = FileUploadSerializer(data=request.data)
+        serializer = FileUploadCSVSerializer(data=request.data)
         if serializer.is_valid():
             csv_file = serializer.validated_data['csv_file']
             
@@ -203,27 +203,60 @@ class CSVFileUploadView(APIView):
 
 
 
-class CSVHeaderAPIView(APIView):
+
+class CSVColumnNamesAPIView(APIView):
     def post(self, request, format=None):
-        csv_file_name = request.data.get('csv_file')
+        csv_file_name = request.data.get('csv_file_name')
         upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
         csv_file_path = os.path.join(upload_folder, csv_file_name)
 
         if not os.path.exists(csv_file_path):
             return Response({'error': 'CSV file not found.'}, status=400)
 
-        headers = []
+        column_names = []
 
         try:
             with open(csv_file_path, 'r') as file:
                 reader = csv.reader(file)
-                headers = next(reader)
+                if reader:
+                    column_names = next(reader)
 
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 
-        return Response({'headers': headers})
+        return Response({'column_names': column_names})
 
+
+# class CSVHeaderAPIView(APIView):
+#     def post(self, request, format=None):
+#         serializer = FileUploadSerializer(data=request.data)
+#         if serializer.is_valid():
+#             csv_file = serializer.validated_data['csv_file']
+            
+#             # Get the upload folder path
+#             upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
+            
+#             # Create the uploads folder if it doesn't exist
+#             if not os.path.exists(upload_folder):
+#                 os.makedirs(upload_folder)
+
+#             # Save the uploaded CSV file to the uploads folder
+#             csv_path = os.path.join(upload_folder, csv_file.name)
+#             with open(csv_path, 'wb') as file:
+#                 file.write(csv_file.read())
+
+#             # Perform additional processing with the uploaded file if needed
+#             headers = []
+#             try:
+#                 with open(csv_path, 'r') as file:
+#                     reader = csv.reader(file)
+#                     headers = next(reader)
+#             except Exception as e:
+#                 return Response({'error': str(e)}, status=500)
+
+#             return Response({'headers': headers}, status=status.HTTP_201_CREATED)
+        
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

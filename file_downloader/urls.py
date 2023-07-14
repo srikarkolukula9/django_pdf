@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import upload_file, FileUploadView, ExtractPDFView, PreviewPDFView, ExtractAllPDFView, PreviewHTMLAPIView, preview_html, delete_uploads, CSVFileUploadView, CSVHeaderAPIView
+from .views import upload_file, FileUploadView, ExtractPDFView, PreviewPDFView, ExtractAllPDFView, PreviewHTMLAPIView, preview_html, delete_uploads, CSVFileUploadView, CSVColumnNamesAPIView
 
 app_name = 'file_downloader'
 
@@ -15,5 +15,5 @@ urlpatterns = [
     path('api/delete-uploads/', delete_uploads, name='delete_uploads'),
     # path('api/delete-uploads-uploads/', delete_uploads_uploads, name='delete_uploads_uploads'),
     path('api/upload-csv/', CSVFileUploadView.as_view(), name='upload_csv'),
-    path('api/csv-header/', CSVHeaderAPIView.as_view(), name='csv_header'),
+    path('api/csv-header/', CSVColumnNamesAPIView.as_view(), name='csv_header'),
 ]
