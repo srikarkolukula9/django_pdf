@@ -13,3 +13,8 @@ class FileUploadSerializer(serializers.Serializer):
         instance.css_file.save(css_file.name, css_file)
         instance.save()
         return instance
+
+
+
+class FileUploadSerializer(serializers.Serializer):
+    css_file = serializers.FileField()

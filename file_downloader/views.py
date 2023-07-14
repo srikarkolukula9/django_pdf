@@ -168,6 +168,35 @@ def delete_uploads(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
+
+
+class FileUploadView(APIView):
+    def post(self, request, format=None):
+        serializer = FileUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            css_file = serializer.validated_data['css_file']
+            
+            # Get the upload folder path
+            upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
+            
+            # Create the uploads folder if it doesn't exist
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder)
+
+            # Save the uploaded CSS file to the uploads folder
+            css_path = os.path.join(upload_folder, css_file.name)
+            with open(css_path, 'wb') as file:
+                file.write(css_file.read())
+
+            # Perform additional processing with the uploaded file if needed
+
+            return Response(status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 # def delete_uploads_uploads(request):
 #     upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads/uploads')
 
