@@ -41,10 +41,10 @@ class FileUploadView(APIView):
         if serializer.is_valid():
             serializer.save()
             html_file = serializer.validated_data['html_file']
-            html_path = default_storage.save('index.html', html_file)
+            # html_path = default_storage.save('uploads2/index.html', html_file)
 
             css_file = serializer.validated_data['css_file']
-            css_path = default_storage.save('static.css' , css_file)
+            # css_path = default_storage.save('uploads2/static.css' , css_file)
             # Perform additional processing with the uploaded files
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -109,7 +109,7 @@ class PreviewHTMLAPIView(APIView):
         uploads_folder = 'uploads'  # Path to the uploads folder
 
         html_filepath = os.path.join(uploads_folder, filename)
-        css_filepath = os.path.join(uploads_folder, 'style.css')
+        css_filepath = os.path.join(uploads_folder, 'static.css')
 
         if os.path.isfile(html_filepath) and os.path.isfile(css_filepath):
             with open(html_filepath, 'r') as html_file, open(css_filepath, 'r') as css_file:
