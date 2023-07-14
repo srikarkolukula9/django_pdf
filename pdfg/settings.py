@@ -151,3 +151,5 @@ CSP_DEFAULT_SRC = [
 
 X_FRAME_OPTIONS = 'ALLOW-FROM http://localhost:3000/Preview' 
 
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+# DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'

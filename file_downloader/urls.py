@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/preview/<str:filename>/', preview_html, name='preview_html'),
     # path('api/render-html/<str:filename>/', RenderHTMLView.as_view(), name='render_html'),
     path('api/delete-uploads/', delete_uploads, name='delete_uploads'),
+    # path('api/delete-uploads-uploads/', delete_uploads_uploads, name='delete_uploads_uploads'),
 ]

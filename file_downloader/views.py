@@ -41,10 +41,10 @@ class FileUploadView(APIView):
         if serializer.is_valid():
             serializer.save()
             html_file = serializer.validated_data['html_file']
-            html_path = default_storage.save('index.html', html_file)
+            # html_path = default_storage.save('index.html', html_file)
 
             css_file = serializer.validated_data['css_file']
-            css_path = default_storage.save('static.css' , css_file)
+            # css_path = default_storage.save('static.css' , css_file)
             # Perform additional processing with the uploaded files
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -168,6 +168,20 @@ def delete_uploads(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+# def delete_uploads_uploads(request):
+#     upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads/uploads')
+
+#     try:
+#         # Iterate through files within the uploads folder and delete them
+#         for filename in os.listdir(upload_folder):
+#             file_path = os.path.join(upload_folder, filename)
+#             if os.path.isfile(file_path):
+#                 os.remove(file_path)
+
+#         return JsonResponse({'message': 'All files deleted successfully.'})
+
+#     except Exception as e:
+#         return JsonResponse({'error': str(e)}, status=500)
 
 
 
