@@ -32,7 +32,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'pdfkit',
     'corsheaders',
+    'wkhtmltopdf',
     'PyPDF2',
     'rest_framework',
     'django.contrib.admin',
@@ -153,3 +155,11 @@ X_FRAME_OPTIONS = 'ALLOW-FROM http://localhost:3000/Preview'
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 # DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+WKHTMLTOPDF_PATH = '/path/to/wkhtmltopdf'  # Replace with the actual path to the wkhtmltopdf binary
+PDFKIT_OPTIONS = {
+    'page-size': 'Letter',
+    'encoding': 'UTF-8',
+    'debug-javascript': '',
+    'no-stop-slow-scripts': '',
+}

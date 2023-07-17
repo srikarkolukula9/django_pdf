@@ -22,6 +22,41 @@ from django.http import HttpResponse
 
 import csv
 
+from django.template.loader import get_template
+import pdfkit
+
+
+
+
+def generate_pdf(request):
+    html_path = os.path.join('uploads', 'index.html')
+    css_path = os.path.join('uploads', 'style.css')
+    pdf_output_path = os.path.join('uploads', 'pdf', 'output.pdf')
+
+    options = {
+        'page-size': 'A4',
+        'margin-top': '0mm',
+        'margin-right': '0mm',
+        'margin-bottom': '0mm',
+        'margin-left': '0mm',
+        'encoding': 'UTF-8',
+        'no-outline': None
+    }
+
+    pdfkit.from_file(html_path, pdf_output_path, options=options, css=css_path)
+
+    with open(pdf_output_path, 'rb') as pdf_file:
+        response = HttpResponse(pdf_file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="output.pdf"'
+
+    return response
+
+
+
+
+
+
+
 def upload_file(request):
     if request.method == 'POST':
         form = MyForm(request.POST, request.FILES)
@@ -225,6 +260,66 @@ class CSVColumnNamesAPIView(APIView):
             return Response({'error': str(e)}, status=500)
 
         return Response({'column_names': column_names})
+    
+    
+import os
+from django.http import HttpResponse, HttpResponseNotFound
+
+def edit_html(request, filename):
+    uploads_folder = 'uploads'  # Path to the uploads folder
+
+    html_filepath = os.path.join(uploads_folder, filename)
+    css_filepath = os.path.join(uploads_folder, 'style.css')
+
+    if request.method == 'POST':
+        # Handle form submission for editing the HTML file
+        new_html_content = request.POST.get('html_content', '')
+        with open(html_filepath, 'w') as html_file:
+            html_file.write(new_html_content)
+
+    if os.path.isfile(html_filepath) and os.path.isfile(css_filepath):
+        with open(html_filepath, 'r') as html_file, open(css_filepath, 'r') as css_file:
+            html_content = html_file.read()
+            css_content = css_file.read()
+
+        # Generate the HTML page with the CSS and HTML content
+        combined_html = f'''
+            <style>
+                .container {{
+                    display: flex;
+                }}
+                .preview {{
+                    flex: 1;
+                    padding-right: 10px;
+                }}
+                .editor {{
+                    flex: 1;
+                }}
+                textarea {{
+                    width: 100%;
+                    height: 100vh;
+                }}
+            </style>
+            <div class="container">
+                <div class="preview">
+                    <h2>Preview:</h2>
+                    <div>{html_content}</div>
+                </div>
+                <div class="editor">
+                    <h2>Edit:</h2>
+                    <form method="post">
+                        <textarea name="html_content" rows="10" cols="50">{html_content}</textarea>
+                        <br>
+                        <input type="submit" value="Save">
+                    </form>
+                </div>
+            </div>
+        '''
+
+        return HttpResponse(combined_html, content_type='text/html')
+
+    return HttpResponseNotFound('File not found')
+
 
 
 # class CSVHeaderAPIView(APIView):
