@@ -240,8 +240,8 @@ class CSVFileUploadView(APIView):
 
 
 class CSVColumnNamesAPIView(APIView):
-    def post(self, request, format=None):
-        csv_file_name = request.data.get('csv_file_name')
+    def get(self, request, format=None):
+        csv_file_name = 'data.csv'
         upload_folder = os.path.join(settings.MEDIA_ROOT, 'uploads')
         csv_file_path = os.path.join(upload_folder, csv_file_name)
 
