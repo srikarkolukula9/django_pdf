@@ -30,7 +30,7 @@ import pdfkit
 
 def generate_pdf(request):
     html_path = os.path.join('uploads', 'index.html')
-    css_path = os.path.join('uploads', 'style.css')
+    # css_path = os.path.join('uploads', 'style.css')
     pdf_output_path = os.path.join('uploads', 'pdf', 'output.pdf')
 
     options = {
@@ -43,13 +43,65 @@ def generate_pdf(request):
         'no-outline': None
     }
 
-    pdfkit.from_file(html_path, pdf_output_path, options=options, css=css_path)
+    pdfkit.from_file(html_path, pdf_output_path, options=options)
+    #, css=css_path
 
     with open(pdf_output_path, 'rb') as pdf_file:
         response = HttpResponse(pdf_file.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="output.pdf"'
 
     return response
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.conf import settings
+import os
+import tempfile
+from xhtml2pdf import pisa
+
+
+def convert_html_to_pdf(request):
+    # Get the uploaded HTML and CSS files
+    html_file = request.FILES.get('html_file')
+    css_file = request.FILES.get('css_file')
+
+    # Read the HTML file content
+    html = html_file.read().decode('utf-8')
+
+    # Read the CSS file content
+    css = css_file.read().decode('utf-8')
+
+    # Combine HTML and CSS
+    template = f"""
+    <html>
+    <head>
+        <style>{css}</style>
+    </head>
+    <body>
+        {html}
+    </body>
+    </html>
+    """
+
+    # Create a PDF file
+    pdf_file = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False, dir=settings.MEDIA_ROOT + '/pdf')
+    pisa.CreatePDF(template, dest=pdf_file)
+
+    # Close the PDF file
+    pdf_file.close()
+
+    # Prepare the response with PDF content type
+    with open(pdf_file.name, 'rb') as f:
+        pdf_data = f.read()
+
+    # Delete the PDF file
+    os.unlink(pdf_file.name)
+
+    # Prepare the response with PDF content type
+    response = HttpResponse(pdf_data, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="converted.pdf"'
+    return response
+
 
 
 

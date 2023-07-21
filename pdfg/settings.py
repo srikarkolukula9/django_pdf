@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'xhtml2pdf',
     'pdfkit',
     'corsheaders',
     'wkhtmltopdf',
@@ -163,3 +164,6 @@ PDFKIT_OPTIONS = {
     'debug-javascript': '',
     'no-stop-slow-scripts': '',
 }
+
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')

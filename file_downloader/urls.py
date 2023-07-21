@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import upload_file, FileUploadView, ExtractPDFView, PreviewPDFView, ExtractAllPDFView, PreviewHTMLAPIView, preview_html, delete_uploads, CSVFileUploadView, CSVColumnNamesAPIView, generate_pdf, edit_html
+from .views import upload_file, FileUploadView, ExtractPDFView, PreviewPDFView, ExtractAllPDFView, PreviewHTMLAPIView, preview_html, delete_uploads, CSVFileUploadView, CSVColumnNamesAPIView, generate_pdf, edit_html, convert_html_to_pdf
 
 app_name = 'file_downloader'
 
@@ -18,4 +18,5 @@ urlpatterns = [
     path('api/csv-header/', CSVColumnNamesAPIView.as_view(), name='csv_header'),
     path('generate-pdf/', generate_pdf, name='generate-pdf'),
     path('edit/<str:filename>/', edit_html, name='edit_html'),
+    path('convert-to-pdf/', convert_html_to_pdf, name='convert_to_pdf'),
 ]
